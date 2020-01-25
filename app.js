@@ -34,7 +34,7 @@ const serveHomePage = req => {
 
 const findHandler = req => {
   if (req.method === 'GET' && req.url === '/') return serveHomePage;
-  if (req.method === 'GET') return serveStaticFile;
+  if (req.method === 'GET' || req.method === 'POST') return serveStaticFile;
   return () => new Response();
 };
 

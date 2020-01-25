@@ -1,1 +1,23 @@
-<h1>guest</h1>
+<html>
+  <head>
+    <title>Guest Book</title>
+    <link rel="stylesheet" href="css/guestbook.css" />
+    <script src="js/dealComment.js"></script>
+  </head>
+  <body>
+    <h1><a href="/">&lt&lt</a> Guest Book</h1>
+    <h2>Leave a comment</h2>
+    <form action="/guestBook.html" method="POST" onsubmit="addComment()">
+      <span> Name: <input type="text" name="name" required /> </span><br />
+      <span>
+        Comment:
+        <textarea name="comment" id="comment" cols="30" rows="8" required></textarea>
+      <br />
+      <input type="submit" value="Submit" id="submit" />
+    </form>
+    <hr />
+    <p id="commentList">Date Time Name Comment</p>
+    <hr id="lastLine" />
+  </body>
+</html>
+

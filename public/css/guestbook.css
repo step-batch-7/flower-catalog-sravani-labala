@@ -1,0 +1,22 @@
+body {
+  padding: 10px 100px 0px 100px;
+}
+h1 {
+  text-align: right;
+  color: orange;
+  padding-right: 150px;
+  margin: 0 auto;
+}
+hr {
+  border: 1px solid gray;
+}
+#submit {
+  background-color: lightgray;
+  border: 1px solid #111;
+}
+#comment {
+  min-height: 50px;
+}
+#lastLine {
+  border: 1px solid lightslategrey;
+}
