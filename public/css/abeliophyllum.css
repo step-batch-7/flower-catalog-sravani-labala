@@ -1,0 +1,29 @@
+body {
+  padding: 10px 100px 0px 100px;
+}
+h2 {
+  text-align: center;
+  color: orange;
+  margin: 0 auto;
+}
+span {
+  color: indigo;
+  font-weight: 100;
+  border-bottom: 2.5px solid indigo;
+}
+hr {
+  margin-top: 20px;
+}
+#content {
+  display: flex;
+}
+img {
+  height: 500px;
+  width: 50%;
+}
+#paragraph {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding-left: 10px;
+}
