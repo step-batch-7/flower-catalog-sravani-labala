@@ -1,0 +1,40 @@
+Flower Catalog app
+
+Folders : 
+    lib:- files like request.js, response.js, mimeTypes.js
+    public:-
+        images:- all the images
+        pdf:- all the pdf's
+    templates:-
+        home.html
+files:-
+    server.js
+    app.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+need to create folders and files (css,js,app,server,request,response)
+need to connect the server to client (an empty page)
+both frontend and backend should be done parallel by doing one page at a time

@@ -1,0 +1,34 @@
+body {
+  padding: 10px 100px 0px 100px;
+}
+hr {
+  margin-top: 20px;
+  border: 1px solid gray;
+}
+#heading {
+  text-align: right;
+  color: orange;
+  padding-right: 150px;
+  margin: 0 auto;
+}
+#homePage {
+  display: flex;
+  flex-wrap: wrap;
+}
+#links {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+}
+#bucket {
+  margin-left: auto;
+  border-color: white;
+}
+img {
+  border: 1px solid black;
+}
+#catalogImage {
+  height: 600px;
+  width: auto;
+}
