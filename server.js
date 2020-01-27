@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { Server } = require('net');
 const Request = require('./lib/request');
 const { processRequest } = require('./app');
@@ -11,10 +12,18 @@ const handleConnection = function(socket) {
   });
 };
 
+const setUpDataBase = function() {
+  const data = `${__dirname}/data`;
+  if (!fs.existsSync(`${data}`)) fs.mkdirSync(`${data}`);
+};
+
 const main = function(port) {
   const server = new Server();
   server.on('connection', handleConnection);
-  server.on('listening', () => console.log('listening'));
+  server.on('listening', () => {
+    console.log('listening');
+    setUpDataBase();
+  });
   server.listen(port);
 };
 
