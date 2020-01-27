@@ -1,7 +1,7 @@
 const fs = require('fs');
 const Response = require('./lib/response');
 const CONTENT_TYPES = require('./lib/mimeTypes');
-const { serveGuestPage, serveGuestPost } = require('./lib/dealComments');
+const { serveGuestPage, serveGuestPost } = require('./lib/dealComment');
 const STATIC_FOLDER = `${__dirname}/public`;
 
 const serveStaticFile = req => {
@@ -9,10 +9,9 @@ const serveStaticFile = req => {
   const stat = fs.existsSync(path) && fs.statSync(path);
   if (!stat || !stat.isFile()) return new Response();
   const [, extension] = path.match(/.*\.(.*)$/) || [];
-  const contentType = CONTENT_TYPES[extension];
   const content = fs.readFileSync(path);
   const res = new Response();
-  res.setHeader('Content-Type', contentType);
+  res.setHeader('Content-Type', CONTENT_TYPES[extension]);
   res.setHeader('Content-Length', content.length);
   res.statusCode = 200;
   res.body = content;
@@ -20,15 +19,8 @@ const serveStaticFile = req => {
 };
 
 const serveHomePage = req => {
-  const html = fs.readFileSync(`${STATIC_FOLDER}/home.html`);
-  const res = new Response();
-  if (!req.headers['Cookie'])
-    res.setHeader('Set-Cookie', `sessionId=${new Date().getTime()}`);
-  res.setHeader('Content-Type', CONTENT_TYPES.html);
-  res.setHeader('Content-Length', html.length);
-  res.statusCode = 200;
-  res.body = html;
-  return res;
+  req.url = '/home.html';
+  return serveStaticFile(req);
 };
 
 const findHandler = req => {
