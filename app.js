@@ -1,8 +1,7 @@
 const fs = require('fs');
 const Response = require('./lib/response');
 const CONTENT_TYPES = require('./lib/mimeTypes');
-const { loadTemplate } = require('./lib/viewTemplate');
-
+const { serveGuestPage, serveGuestPost } = require('./lib/dealComments');
 const STATIC_FOLDER = `${__dirname}/public`;
 
 const serveStaticFile = req => {
@@ -21,7 +20,7 @@ const serveStaticFile = req => {
 };
 
 const serveHomePage = req => {
-  const html = loadTemplate('home.html', {});
+  const html = fs.readFileSync(`${STATIC_FOLDER}/home.html`);
   const res = new Response();
   if (!req.headers['Cookie'])
     res.setHeader('Set-Cookie', `sessionId=${new Date().getTime()}`);
@@ -34,7 +33,11 @@ const serveHomePage = req => {
 
 const findHandler = req => {
   if (req.method === 'GET' && req.url === '/') return serveHomePage;
-  if (req.method === 'GET' || req.method === 'POST') return serveStaticFile;
+  if (req.method === 'GET' && req.url === '/guestBook.html')
+    return serveGuestPage;
+  if (req.method === 'POST' && req.url === '/guestBook.html')
+    return serveGuestPost;
+  if (req.method === 'GET') return serveStaticFile;
   return () => new Response();
 };
 

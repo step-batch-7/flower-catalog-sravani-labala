@@ -2,12 +2,11 @@
   <head>
     <title>Guest Book</title>
     <link rel="stylesheet" href="css/guestbook.css" />
-    <script src="js/dealComment.js"></script>
   </head>
   <body>
     <h1><a href="/">&lt&lt</a> Guest Book</h1>
     <h2>Leave a comment</h2>
-    <form action="/guestBook.html" method="POST" onsubmit="addComment()">
+    <form method="POST" >
       <span> Name: <input type="text" name="name" required /> </span><br />
       <span>
         Comment:
@@ -16,8 +15,8 @@
       <input type="submit" value="Submit" id="submit" />
     </form>
     <hr />
-    <p id="commentList">Date Time Name Comment</p>
+    <p >Date Time Name Comment</p>
+    <div>__comments__</div>
     <hr id="lastLine" />
   </body>
 </html>
-

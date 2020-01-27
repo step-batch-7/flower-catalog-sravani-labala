@@ -6,35 +6,15 @@ Folders :
         images:- all the images
         pdf:- all the pdf's
     templates:-
-        home.html
+        guest.html
 files:-
     server.js
     app.js
 
+--DONE--need to create folders and files (css,js,app,server,request,response)
+--DONE--need to connect the server to client (an empty page)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-need to create folders and files (css,js,app,server,request,response)
-need to connect the server to client (an empty page)
 both frontend and backend should be done parallel by doing one page at a time
+
+-------------------------------------
+need to modify the comments page
