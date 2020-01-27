@@ -17,4 +17,9 @@ files:-
 both frontend and backend should be done parallel by doing one page at a time
 
 -------------------------------------
-need to modify the comments page
+--DONE--need to modify the comments page
+-------------------------------------
+bug:
+    in post method of guestbook it is writing multiple times the same comment if we reload the same page
+
+--DONE--bug fixed
