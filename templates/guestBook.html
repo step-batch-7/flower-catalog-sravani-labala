@@ -6,17 +6,22 @@
   <body>
     <h1><a href="/">&lt&lt</a> Guest Book</h1>
     <h2>Leave a comment</h2>
-    <form method="POST" >
-      <span> Name: <input type="text" name="name" required /> </span><br />
-      <span>
-        Comment:
-        <textarea name="comment" id="comment" cols="30" rows="8" required></textarea>
+    <form method="POST">
+      <label> Name: </label>
+      <input type="text" name="name" required /> <br />
+      <label> Comment:</label>
+      <textarea
+        name="comment"
+        id="comment"
+        cols="30"
+        rows="8"
+        required
+      ></textarea>
       <br />
       <input type="submit" value="Submit" id="submit" />
     </form>
     <hr />
-    <p >Date Time Name Comment</p>
-    <div>__comments__</div>
+    <div id="commentsList">__comments__</div>
     <hr id="lastLine" />
   </body>
 </html>

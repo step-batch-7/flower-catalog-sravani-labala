@@ -20,3 +20,9 @@ hr {
 #lastLine {
   border: 1px solid lightslategrey;
 }
+#commentsList {
+  line-height: 5px;
+}
+span {
+  font-size: 25px;
+}
