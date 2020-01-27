@@ -18,12 +18,10 @@ const setUpDataBase = function() {
 };
 
 const main = function(port) {
+  setUpDataBase();
   const server = new Server();
   server.on('connection', handleConnection);
-  server.on('listening', () => {
-    console.log('listening');
-    setUpDataBase();
-  });
+  server.on('listening', () => console.log('listening'));
   server.listen(port);
 };
 
