@@ -1,16 +1,6 @@
-const fs = require('fs');
-const { Server } = require('net');
-const Request = require('./lib/request');
 const { processRequest } = require('./app');
-
-const handleConnection = function(socket) {
-  socket.setEncoding('utf8');
-  socket.on('data', text => {
-    const req = Request.parse(text);
-    const res = processRequest(req);
-    res.writeTo(socket);
-  });
-};
+const http = require('http');
+const fs = require('fs');
 
 const setUpDataBase = function() {
   const data = `${__dirname}/data`;
@@ -19,10 +9,8 @@ const setUpDataBase = function() {
 
 const main = function(port) {
   setUpDataBase();
-  const server = new Server();
-  server.on('connection', handleConnection);
-  server.on('listening', () => console.log('listening'));
-  server.listen(port);
+  const server = new http.Server(processRequest);
+  server.listen(port, () => console.log('listening'));
 };
 
 main(process.argv[2]);

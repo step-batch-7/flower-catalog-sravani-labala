@@ -1,9 +1,17 @@
 const fs = require('fs');
-const Response = require('./lib/response');
-const CONTENT_TYPES = require('./lib/mimeTypes');
+const querystring = require('querystring');
 const STATIC_FOLDER = `${__dirname}/public`;
 const TEMPLATES_FOLDER = `${__dirname}/templates`;
 const commentsFile = `${__dirname}/data/comments.json`;
+const CONTENT_TYPES = {
+  txt: 'text/plain',
+  html: 'text/html',
+  css: 'text/css',
+  js: 'application/javascript',
+  json: 'application/json',
+  gif: 'image/gif',
+  jpg: 'image/jpg'
+};
 
 const updateComments = comments => {
   let previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
@@ -33,46 +41,39 @@ const getGuestPage = function(url) {
   return html;
 };
 
-const serveGuestPage = function(req) {
-  const res = new Response();
+const serveGuestPage = function(req, res) {
   let html = getGuestPage(req.url);
-  res.body = html;
   res.setHeader('Content-Type', CONTENT_TYPES.html);
-  res.setHeader('Content-Length', html.length);
-  res.statusCode = 200;
-  if (req.method === 'GET') return res;
-  updateComments(req.body);
-  html = getGuestPage(req.url);
-  res.setHeader('location', 'guestBook.html');
-  res.statusCode = 303;
-  res.body = html;
-  return res;
+  if (req.method === 'GET') return res.end(html);
+  let data = '';
+  req.on('data', text => (data += text));
+  req.on('end', () => {
+    if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+      let { name, comment } = querystring.parse(data);
+      let comments = { name, comment };
+      updateComments(comments);
+    }
+    html = getGuestPage(req.url);
+    res.setHeader('location', 'guestBook.html');
+    res.statusCode = 303;
+    res.end(html);
+  });
 };
 
-const serveStaticFile = req => {
+const serveStaticFile = (req, res) => {
   if (req.url === '/') req.url = '/home.html';
   const path = `${STATIC_FOLDER}${req.url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
-  if (!stat || !stat.isFile()) return new Response();
+  if (!stat || !stat.isFile()) return res.end('no file');
   const [, extension] = path.match(/.*\.(.*)$/) || [];
-  const content = fs.readFileSync(path);
-  const res = new Response();
   res.setHeader('Content-Type', CONTENT_TYPES[extension]);
-  res.setHeader('Content-Length', content.length);
-  res.statusCode = 200;
-  res.body = content;
-  return res;
+  res.end(fs.readFileSync(path));
 };
 
-const findHandler = req => {
-  if (req.url === '/guestBook.html') return serveGuestPage;
-  if (req.method === 'GET') return serveStaticFile;
-  return () => new Response();
-};
-
-const processRequest = req => {
-  const handler = findHandler(req);
-  return handler(req);
+const processRequest = (req, res) => {
+  if (req.url === '/guestBook.html') return serveGuestPage(req, res);
+  if (req.method === 'GET') return serveStaticFile(req, res);
+  return ((req, res) => res.end('no file'))(req, res);
 };
 
 module.exports = { processRequest };
