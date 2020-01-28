@@ -13,17 +13,25 @@ const CONTENT_TYPES = {
   jpg: 'image/jpg'
 };
 
-const updateComments = comments => {
+const notFound = function(req, res) {
+  res.writeHead(404);
+  res.end();
+};
+
+const methodNotAllowed = function(req, res) {
+  res.writeHead(400);
+  res.end();
+};
+
+const updateComments = function({ name, comment }) {
   let previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
-  const date = new Date().toLocaleString();
-  let { name, comment } = comments;
-  previousComments.push({ name, comment, date });
+  previousComments.push({ name, comment, date: new Date().toLocaleString() });
   fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
 };
 
 const createHtmlForComments = function(html, { name, comment, date }) {
   name = name.replace(/\n/g, '</br>');
-  comment = comment.replace(/\n/g, '</br>');
+  comment = comment.replace(/\n/g, `</br>${'&nbsp'.repeat(5)}`);
   name = name.replace(/ /g, ' &nbsp');
   comment = comment.replace(/ /g, '&nbsp');
   return (
@@ -54,8 +62,7 @@ const serveGuestPage = function(req, res) {
       updateComments(comments);
     }
     html = getGuestPage(req.url);
-    res.setHeader('location', 'guestBook.html');
-    res.statusCode = 303;
+    res.writeHead(303, { location: 'guestBook.html' });
     res.end(html);
   });
 };
@@ -64,16 +71,21 @@ const serveStaticFile = (req, res) => {
   if (req.url === '/') req.url = '/home.html';
   const path = `${STATIC_FOLDER}${req.url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
-  if (!stat || !stat.isFile()) return res.end('no file');
+  if (!stat || !stat.isFile()) return notFound(req, res);
   const [, extension] = path.match(/.*\.(.*)$/) || [];
   res.setHeader('Content-Type', CONTENT_TYPES[extension]);
   res.end(fs.readFileSync(path));
 };
 
-const processRequest = (req, res) => {
-  if (req.url === '/guestBook.html') return serveGuestPage(req, res);
-  if (req.method === 'GET') return serveStaticFile(req, res);
-  return ((req, res) => res.end('no file'))(req, res);
+const handlers = {
+  '/guestBook.html': serveGuestPage,
+  defaultHandler: serveStaticFile
 };
 
-module.exports = { processRequest };
+const methods = {
+  GET: handlers,
+  POST: handlers,
+  NOT_ALLOWED: { defaultHandler: methodNotAllowed }
+};
+
+module.exports = { methods };
