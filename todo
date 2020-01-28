@@ -23,3 +23,7 @@ bug:
     in post method of guestbook it is writing multiple times the same comment if we reload the same page
 
 --DONE--bug fixed
+bug in comment Dialog box:-
+    if the content is more than the page line, it should come down to the next line
+
+--DONE--bug fixed

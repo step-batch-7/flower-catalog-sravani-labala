@@ -5,6 +5,7 @@ const { serveGuestPage, serveGuestPost } = require('./lib/dealComment');
 const STATIC_FOLDER = `${__dirname}/public`;
 
 const serveStaticFile = req => {
+  if (req.url === '/') req.url = '/home.html';
   const path = `${STATIC_FOLDER}${req.url}`;
   const stat = fs.existsSync(path) && fs.statSync(path);
   if (!stat || !stat.isFile()) return new Response();
@@ -18,13 +19,7 @@ const serveStaticFile = req => {
   return res;
 };
 
-const serveHomePage = req => {
-  req.url = '/home.html';
-  return serveStaticFile(req);
-};
-
 const findHandler = req => {
-  if (req.method === 'GET' && req.url === '/') return serveHomePage;
   if (req.method === 'GET' && req.url === '/guestBook.html')
     return serveGuestPage;
   if (req.method === 'POST' && req.url === '/guestBook.html')

@@ -13,9 +13,12 @@ hr {
   background-color: lightgray;
   border: 1px solid #111;
 }
-#comment {
+#commentBox {
   min-height: 50px;
 }
 #lastLine {
   border: 1px solid lightslategrey;
+}
+.comment {
+  word-wrap: break-word;
 }
