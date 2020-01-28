@@ -9,8 +9,6 @@ const updateComments = comments => {
   let previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
   const date = new Date().toLocaleString();
   let { name, comment } = comments;
-  name = name.replace(/\+/g, ' ');
-  comment = comment.replace(/\+/g, ' ');
   previousComments.push({ name, comment, date });
   fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
 };
@@ -18,6 +16,8 @@ const updateComments = comments => {
 const createHtmlForComments = function(html, { name, comment, date }) {
   name = name.replace(/\n/g, '</br>');
   comment = comment.replace(/\n/g, '</br>');
+  name = name.replace(/ /g, ' &nbsp');
+  comment = comment.replace(/ /g, '&nbsp');
   return (
     `<div class="comment"><p ><strong>${'&#128100'}${name}</strong>  ${date}<br/>${'&#9997;'}${comment}</p></div> ` +
     html

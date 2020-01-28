@@ -18,6 +18,7 @@ hr {
 }
 #lastLine {
   border: 1px solid lightslategrey;
+  padding-left: 10px;
 }
 .comment {
   word-wrap: break-word;
