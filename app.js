@@ -23,12 +23,6 @@ const methodNotAllowed = function(req, res) {
   res.end();
 };
 
-const updateComments = function({ name, comment }) {
-  let previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
-  previousComments.push({ name, comment, date: new Date().toLocaleString() });
-  fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
-};
-
 const createHtmlForComments = function(html, { name, comment, date }) {
   name = name.replace(/\n/g, '</br>');
   comment = comment.replace(/\n/g, `</br>${'&nbsp'.repeat(5)}`);
@@ -49,6 +43,13 @@ const getGuestPage = function(url) {
   return html;
 };
 
+const handleComment = function(text) {
+  let { name, comment } = querystring.parse(text);
+  let previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
+  previousComments.push({ name, comment, date: new Date().toLocaleString() });
+  fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
+};
+
 const serveGuestPage = function(req, res) {
   let html = getGuestPage(req.url);
   res.setHeader('Content-Type', CONTENT_TYPES.html);
@@ -56,11 +57,8 @@ const serveGuestPage = function(req, res) {
   let data = '';
   req.on('data', text => (data += text));
   req.on('end', () => {
-    if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-      let { name, comment } = querystring.parse(data);
-      let comments = { name, comment };
-      updateComments(comments);
-    }
+    if (req.headers['content-type'] === 'application/x-www-form-urlencoded')
+      handleComment(data);
     html = getGuestPage(req.url);
     res.writeHead(303, { location: 'guestBook.html' });
     res.end(html);
