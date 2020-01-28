@@ -21,4 +21,5 @@ hr {
 }
 .comment {
   word-wrap: break-word;
+  background-color: whitesmoke;
 }
