@@ -1,18 +1,10 @@
 const fs = require('fs');
 const querystring = require('querystring');
+const CONTENT_TYPES = require('./lib/mimeTypes');
+const { App } = require('./lib/app');
 const STATIC_FOLDER = `${__dirname}/public`;
 const TEMPLATES_FOLDER = `${__dirname}/templates`;
 const commentsFile = `${__dirname}/data/comments.json`;
-const { App } = require('./app');
-const CONTENT_TYPES = {
-  txt: 'text/plain',
-  html: 'text/html',
-  css: 'text/css',
-  js: 'application/javascript',
-  json: 'application/json',
-  gif: 'image/gif',
-  jpg: 'image/jpg'
-};
 const statusCodes = { badRequest: 400, notFound: 404, redirecting: 303 };
 
 const notFound = function(req, res) {
@@ -28,7 +20,6 @@ const methodNotAllowed = function(req, res) {
 const createHtmlForComments = function(html, comments) {
   const emojiSpace = 5;
   let { name, comment } = comments;
-  name = name.replace(/\n/g, '</br>');
   comment = comment.replace(/\n/g, `</br>${'&nbsp'.repeat(emojiSpace)}`);
   name = name.replace(/ /g, ' &nbsp');
   comment = comment.replace(/ /g, '&nbsp');
@@ -49,25 +40,20 @@ const getGuestPage = function(url) {
   return html.replace('__comments__', comments);
 };
 
-const handleComment = function(text) {
-  const { name, comment } = querystring.parse(text);
+const handleComment = function(req, res) {
+  const { name, comment } = querystring.parse(req.body);
   const previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
   previousComments.push({ name, comment, date: new Date().toLocaleString() });
   fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
+  const html = getGuestPage(req.url);
+  res.writeHead(statusCodes.redirecting, { location: 'guestBook.html' });
+  res.end(html);
 };
 
 const serveGuestPage = function(req, res) {
-  let html = getGuestPage(req.url);
+  const html = getGuestPage(req.url);
   res.setHeader('Content-Type', CONTENT_TYPES.html);
-  if (req.method === 'GET') {
-    return res.end(html);
-  }
-  if (req.headers['content-type'] === 'application/x-www-form-urlencoded') {
-    handleComment(req.body);
-  }
-  html = getGuestPage(req.url);
-  res.writeHead(statusCodes.redirecting, { location: 'guestBook.html' });
-  res.end(html);
+  return res.end(html);
 };
 
 const validatePath = function(path) {
@@ -104,8 +90,8 @@ const app = new App();
 
 app.use(readBody);
 app.get('', serveStaticFile);
-app.post('/guestBook.html', serveGuestPage);
 app.get('/guestBook.html', serveGuestPage);
+app.post('/guestBook.html', handleComment);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

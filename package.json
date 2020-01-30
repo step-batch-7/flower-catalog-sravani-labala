@@ -1,0 +1,24 @@
+{
+  "name": "flower-catalog-sravani-labala",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/step-batch-7/flower-catalog-sravani-labala.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/step-batch-7/flower-catalog-sravani-labala/issues"
+  },
+  "homepage": "https://github.com/step-batch-7/flower-catalog-sravani-labala#readme"
+}
