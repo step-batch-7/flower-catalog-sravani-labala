@@ -27,3 +27,7 @@ bug in comment Dialog box:-
     if the content is more than the page line, it should come down to the next line
 
 --DONE--bug fixed
+------------------------------------
+--DONE--  changed from net server to the http server
+--DONE-- added app class
+--DONE-- added eslint and corrected the errors

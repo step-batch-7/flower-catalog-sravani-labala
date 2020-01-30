@@ -4,13 +4,17 @@ const { app } = require('./handler');
 
 const setUpDataBase = function() {
   const data = `${__dirname}/data`;
-  if (!fs.existsSync(`${data}`)) fs.mkdirSync(`${data}`);
+  if (!fs.existsSync(`${data}`)) {
+    fs.mkdirSync(`${data}`);
+  }
 };
 
 const main = function(port) {
   setUpDataBase();
   const server = new http.Server(app.serve.bind(app));
-  server.listen(port, () => console.log('listening'));
+  server.listen(port, () => process.stdout.write('listening'));
 };
 
-main(process.argv[2]);
+const defaultPort = 4000;
+const getUserPort = 2;
+main(process.argv[getUserPort] || defaultPort);

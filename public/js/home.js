@@ -1,7 +1,10 @@
-const blinkBucket = function() {
-  document.getElementById('bucket').style.visibility = 'hidden';
-  setTimeout(
-    () => (document.getElementById('bucket').style.visibility = 'visible'),
-    1000
-  );
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
+const main = function() {
+  const jug = document.getElementById('wateringJug');
+  jug.style.visibility = 'hidden';
+  const timeoutSeconds = 1000;
+  setTimeout(() => {
+    jug.style.visibility = 'visible';
+  }, timeoutSeconds);
 };

@@ -16,7 +16,10 @@ class App {
       matchRoute(route, req)
     );
     const next = function() {
-      if (matchingHandlers.length === 0) return;
+      const ZERO = 0;
+      if (matchingHandlers.length === ZERO) {
+        return;
+      }
       const router = matchingHandlers.shift();
       router.handler(req, res, next);
     };
@@ -25,8 +28,9 @@ class App {
 }
 
 const matchRoute = function(route, req) {
-  if (route.method)
-    return req.method == route.method && req.url.match(route.path);
+  if (route.method) {
+    return req.method === route.method && req.url.match(route.path);
+  }
   return true;
 };
 
