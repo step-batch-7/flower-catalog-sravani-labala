@@ -7,8 +7,8 @@
     "lib": "lib"
   },
   "scripts": {
-    "test": "mocha",
-    "start": "node server.js"
+    "test": "mkdir test/resource ;export DATA_STORE=$(pwd)/test/resource/comments.json; nyc mocha; rm -rf test/resource  ",
+    "start": "mkdir -p dataBase;export DATA_STORE=$(pwd)/dataBase/comments.json; node server.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +23,6 @@
   "homepage": "https://github.com/step-batch-7/flower-catalog-sravani-labala#readme",
   "devDependencies": {
     "mocha": "^7.0.1",
-    "sinon": "^8.1.1",
     "supertest": "^4.0.2"
   },
   "dependencies": {

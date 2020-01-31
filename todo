@@ -35,5 +35,5 @@ bug in comment Dialog box:-
 
 
 --DONE-- need to implement the tests
-
-    but not at tested the post method as it is writing to the data base
+Bug:-  but not at tested the post method as it is writing to the data base
+--DONE-- the testing of the post method by adding a script in npm test and npm start

@@ -4,7 +4,9 @@ const CONTENT_TYPES = require('./lib/mimeTypes');
 const { App } = require('./lib/app');
 const STATIC_FOLDER = `${__dirname}/public`;
 const TEMPLATES_FOLDER = `${__dirname}/templates`;
-const commentsFile = `${__dirname}/data/comments.json`;
+const config = require(`${__dirname}/config`);
+const commentsFile = config.DATA_STORE;
+
 const statusCodes = { badRequest: 400, notFound: 404, redirecting: 303 };
 
 const notFound = function(req, res) {
@@ -31,11 +33,6 @@ const createHtmlForComments = function(html, comments) {
 };
 
 const getGuestPage = function(url) {
-  const data = `${__dirname}/data`;
-  if (!fs.existsSync(`${data}`)) {
-    fs.mkdirSync(`${data}`);
-  }
-
   if (!fs.existsSync(commentsFile)) {
     fs.writeFileSync(commentsFile, '[]');
   }
@@ -77,7 +74,7 @@ const serveStaticFile = (req, res, next) => {
   if (validatePath(path)) {
     return next();
   }
-  const [, extension] = path.match(/.*\.(.*)$/) || [];
+  const [, extension] = path.match(/.*\.(.*)$/);
   res.setHeader('Content-Type', CONTENT_TYPES[extension]);
   res.end(fs.readFileSync(path));
 };
@@ -95,11 +92,11 @@ const readBody = function(req, res, next) {
 
 const app = new App();
 
-app.use(readBody);
-app.get('', serveStaticFile);
 app.get('/guestBook.html', serveGuestPage);
-app.post('/guestBook.html', handleComment);
+app.get('', serveStaticFile);
 app.get('', notFound);
+app.use(readBody);
+app.post('/guestBook.html', handleComment);
 app.post('', notFound);
 app.use(methodNotAllowed);
 
