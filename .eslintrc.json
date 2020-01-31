@@ -84,6 +84,14 @@
         "no-undef": "off",
         "no-unused-vars": "off"
       }
+    },
+    {
+      "files": ["test/*.js"],
+      "rules": {
+        "max-len": "off",
+        "no-magic-numbers": "off",
+        "max-statements": "off"
+      }
     }
   ]
 }

@@ -50,7 +50,11 @@ const handleComment = function(req, res) {
   res.end(html);
 };
 
-const serveGuestPage = function(req, res) {
+const serveGuestPage = function(req, res, next) {
+  if (validatePath(`${TEMPLATES_FOLDER}${req.url}`)) {
+    next();
+    return;
+  }
   const html = getGuestPage(req.url);
   res.setHeader('Content-Type', CONTENT_TYPES.html);
   return res.end(html);

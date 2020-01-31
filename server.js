@@ -1,20 +1,11 @@
 const http = require('http');
-const fs = require('fs');
 const { app } = require('./handler');
+const defaultPort = 4000;
 
-const setUpDataBase = function() {
-  const data = `${__dirname}/data`;
-  if (!fs.existsSync(`${data}`)) {
-    fs.mkdirSync(`${data}`);
-  }
-};
-
-const main = function(port) {
-  setUpDataBase();
+const main = function(port = defaultPort) {
   const server = new http.Server(app.serve.bind(app));
   server.listen(port, () => process.stdout.write('listening'));
 };
 
-const defaultPort = 4000;
-const getUserPort = 2;
-main(process.argv[getUserPort] || defaultPort);
+const [, , port] = process.argv;
+main(port);

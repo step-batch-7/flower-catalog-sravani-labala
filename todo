@@ -31,3 +31,9 @@ bug in comment Dialog box:-
 --DONE--  changed from net server to the http server
 --DONE-- added app class
 --DONE-- added eslint and corrected the errors
+-------------------------------------
+
+
+--DONE-- need to implement the tests
+
+    but not at tested the post method as it is writing to the data base
