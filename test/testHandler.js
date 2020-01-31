@@ -1,5 +1,7 @@
 const request = require('supertest');
 const { app } = require('../handler');
+const fs = require('fs');
+const sinon = require('sinon');
 
 describe('GET method', function() {
   it('should give the home page of the app for the url /', function(done) {
@@ -33,6 +35,18 @@ describe('POST method', function() {
     request(app.serve.bind(app))
       .post('/notFoundFile')
       .expect(404, done);
+  });
+  beforeEach(function() {
+    sinon.replace(fs, 'writeFileSync', () => {});
+  });
+  it('should give the guest page of the app for the url /guestBook.html', function(done) {
+    request(app.serve.bind(app))
+      .post('/guestBook.html')
+      .send('name=sravani&comment=trying')
+      .expect(303, done);
+  });
+  afterEach(function() {
+    sinon.restore();
   });
 });
 

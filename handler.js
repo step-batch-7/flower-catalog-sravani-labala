@@ -31,6 +31,11 @@ const createHtmlForComments = function(html, comments) {
 };
 
 const getGuestPage = function(url) {
+  const data = `${__dirname}/data`;
+  if (!fs.existsSync(`${data}`)) {
+    fs.mkdirSync(`${data}`);
+  }
+
   if (!fs.existsSync(commentsFile)) {
     fs.writeFileSync(commentsFile, '[]');
   }
@@ -42,7 +47,7 @@ const getGuestPage = function(url) {
 
 const handleComment = function(req, res) {
   const { name, comment } = querystring.parse(req.body);
-  const previousComments = JSON.parse(fs.readFileSync(commentsFile, 'utf8'));
+  const previousComments = JSON.parse(fs.readFileSync(commentsFile));
   previousComments.push({ name, comment, date: new Date().toLocaleString() });
   fs.writeFileSync(commentsFile, JSON.stringify(previousComments));
   const html = getGuestPage(req.url);
@@ -52,8 +57,7 @@ const handleComment = function(req, res) {
 
 const serveGuestPage = function(req, res, next) {
   if (validatePath(`${TEMPLATES_FOLDER}${req.url}`)) {
-    next();
-    return;
+    return next();
   }
   const html = getGuestPage(req.url);
   res.setHeader('Content-Type', CONTENT_TYPES.html);
@@ -71,8 +75,7 @@ const serveStaticFile = (req, res, next) => {
   }
   const path = `${STATIC_FOLDER}${req.url}`;
   if (validatePath(path)) {
-    next();
-    return;
+    return next();
   }
   const [, extension] = path.match(/.*\.(.*)$/) || [];
   res.setHeader('Content-Type', CONTENT_TYPES[extension]);

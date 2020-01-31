@@ -23,6 +23,10 @@
   "homepage": "https://github.com/step-batch-7/flower-catalog-sravani-labala#readme",
   "devDependencies": {
     "mocha": "^7.0.1",
+    "sinon": "^8.1.1",
     "supertest": "^4.0.2"
+  },
+  "dependencies": {
+    "eslint": "^6.8.0"
   }
 }
