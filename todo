@@ -37,3 +37,6 @@ bug in comment Dialog box:-
 --DONE-- need to implement the tests
 Bug:-  but not at tested the post method as it is writing to the data base
 --DONE-- the testing of the post method by adding a script in npm test and npm start
+
+---------------------------------------
+--DONE--need to add the comments class

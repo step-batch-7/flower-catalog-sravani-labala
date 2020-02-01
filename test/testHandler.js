@@ -1,6 +1,20 @@
 const request = require('supertest');
 const { app } = require('../handler');
 
+describe('POST method', function() {
+  it('should give the guest page of the app for the url /guestBook.html', function(done) {
+    request(app.serve.bind(app))
+      .post('/guestBook.html')
+      .send('name=sravani&comment=trying')
+      .expect(303, done);
+  });
+  it('should give the file not found error if the file is not present', function(done) {
+    request(app.serve.bind(app))
+      .post('/notFoundFile')
+      .expect(404, done);
+  });
+});
+
 describe('GET method for pages', function() {
   it('should give the home page of the app for the url /', function(done) {
     request(app.serve.bind(app))
@@ -33,26 +47,12 @@ describe('GET method for pages', function() {
       .expect(/Abeliophyllum.pdf/)
       .expect(200, done);
   });
-  it('should give the guest page of the app for the url /ageratum.html', function(done) {
+  it('should give the ageratum page of the app for the url /ageratum.html', function(done) {
     request(app.serve.bind(app))
       .get('/ageratum.html')
       .expect('Content-Type', 'text/html')
       .expect(/Ageratum.pdf/)
       .expect(200, done);
-  });
-});
-
-describe('POST method', function() {
-  it('should give the file not found error if the file is not present', function(done) {
-    request(app.serve.bind(app))
-      .post('/notFoundFile')
-      .expect(404, done);
-  });
-  it('should give the guest page of the app for the url /guestBook.html', function(done) {
-    request(app.serve.bind(app))
-      .post('/guestBook.html')
-      .send('name=sravani&comment=trying')
-      .expect(303, done);
   });
 });
 
